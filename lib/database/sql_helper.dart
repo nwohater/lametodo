@@ -25,12 +25,10 @@ class SQLHelper {
 
     // Build the path to the database file
     final path = join(documentsDirectory.path, 'todo.db');
-    print('path: $path');
     return sql.openDatabase(
       path,
       version: 1,
       onCreate: (sql.Database database, int version) async {
-        print("...creating a table...");
         await createTables(database);
       },
     );

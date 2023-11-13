@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_exit_app/flutter_exit_app.dart';
 import '../database/sql_helper.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
@@ -11,8 +12,6 @@ class ToDoPage extends StatefulWidget {
 
 class _ToDoPageState extends State<ToDoPage> {
   List<Map<String, dynamic>> _todos = [];
-
-
 
   void _refreshToDos() async {
     final data = await SQLHelper.getItems();
@@ -36,7 +35,7 @@ class _ToDoPageState extends State<ToDoPage> {
     final description = _descriptionController.text;
     await SQLHelper.createItem(title, description);
     _refreshToDos();
-    print("...number of items: ${_todos.length}");
+    //print("...number of items: ${_todos.length}");
   }
 
   Future<void> _updateItem(int id) async {
@@ -118,12 +117,17 @@ class _ToDoPageState extends State<ToDoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: const Center(child: Text('Lame ToDo')),
+        leading: IconButton(
+          icon: const Icon(Icons.exit_to_app_rounded),
+          onPressed: () => FlutterExitApp.exitApp(iosForceExit: true),
+        ),
+        title: const Center(child: Text('Lame To Do')),
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete),
+            icon: const Icon(Icons.delete_forever),
             onPressed: () async {
               AwesomeDialog(
                 context: context,
