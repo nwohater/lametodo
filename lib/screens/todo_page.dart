@@ -12,16 +12,12 @@ class ToDoPage extends StatefulWidget {
 class _ToDoPageState extends State<ToDoPage> {
   List<Map<String, dynamic>> _todos = [];
 
-  bool _isLoading = true;
+
 
   void _refreshToDos() async {
-    setState(() {
-      _isLoading = true;
-    });
     final data = await SQLHelper.getItems();
     setState(() {
       _todos = data;
-      _isLoading = false;
     });
   }
 
