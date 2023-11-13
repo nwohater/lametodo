@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../database/sql_helper.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({super.key});
@@ -60,6 +61,10 @@ class _ToDoPageState extends State<ToDoPage> {
     _refreshToDos();
   }
 
+  Future<void> _deleteAll() async {
+    await SQLHelper.deleteAll();
+    _refreshToDos();
+  }
   void _showForm(int? id) async {
     if (id != null) {
       final existingToDo = _todos.firstWhere((element) => element['id'] == id);
@@ -72,7 +77,7 @@ class _ToDoPageState extends State<ToDoPage> {
       elevation: 5,
       isScrollControlled: true,
       builder: (_) => Container(
-        padding: EdgeInsets.only(top: 15, left: 15, right:15, bottom: MediaQuery.of(context).viewInsets.bottom + 120,
+        padding: EdgeInsets.only(top: 5, left: 15, right:15, bottom: MediaQuery.of(context).viewInsets.bottom + 120,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -83,14 +88,14 @@ class _ToDoPageState extends State<ToDoPage> {
             decoration: const InputDecoration(labelText: 'Title'),
           ),
           const SizedBox(
-              height:10
+              height: 10
           ),
           TextField(
             controller: _descriptionController,
             decoration: const InputDecoration(labelText: 'Description'),
           ),
           const SizedBox(
-              height: 20
+              height: 10
           ),
           ElevatedButton(
               onPressed: () async {
@@ -120,12 +125,31 @@ class _ToDoPageState extends State<ToDoPage> {
       appBar: AppBar(
         title: const Center(child: Text('Lame ToDo')),
         backgroundColor: Colors.blue,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () async {
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.warning,
+                animType: AnimType.topSlide,
+                title: 'Delete All',
+                desc: 'Are you sure you want to delete all items?',
+                btnCancelOnPress: () {},
+                btnOkOnPress: () async {
+                  await _deleteAll();
+                },
+              ).show();
+
+            },
+          ),
+        ],
     ),
     body: ListView.builder(
       itemCount: _todos.length,
       itemBuilder: (context, index) => Card(
         color: Colors.lightBlueAccent,
-        margin: const EdgeInsets.all(15),
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal:15),
         child: ListTile(
           title: Text(_todos[index]['title']),
           subtitle: Text(_todos[index]['description']),
