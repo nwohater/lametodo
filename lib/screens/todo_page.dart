@@ -38,7 +38,7 @@ class _ToDoPageState extends State<ToDoPage> {
     final title = _titleController.text;
     final description = _descriptionController.text;
     await SQLHelper.createItem(title, description);
-    await _refreshToDos();
+    _refreshToDos();
     print("...number of items: ${_todos.length}");
   }
 
