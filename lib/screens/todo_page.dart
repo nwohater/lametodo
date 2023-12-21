@@ -13,7 +13,7 @@ class _ToDoPageState extends State<ToDoPage> {
 
   bool _isLoading = true;
 
-  void _refreshToDos() async {
+  Future<void> _refreshToDos() async {
     setState(() {
       _isLoading = true;
     });
@@ -38,7 +38,7 @@ class _ToDoPageState extends State<ToDoPage> {
     final title = _titleController.text;
     final description = _descriptionController.text;
     await SQLHelper.createItem(title, description);
-    _refreshToDos();
+    await _refreshToDos();
     print("...number of items: ${_todos.length}");
   }
 
