@@ -118,14 +118,16 @@ class _ToDoPageState extends State<ToDoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Lame ToDo')),
+        title: const Center(child: Text('Lame To Do')),
         backgroundColor: Colors.blue,
     ),
-    body: ListView.builder(
+    body: _isLoading ?
+    const Center(child: CircularProgressIndicator()) :
+    ListView.builder(
       itemCount: _todos.length,
       itemBuilder: (context, index) => Card(
         color: Colors.lightBlueAccent,
-        margin: const EdgeInsets.all(15),
+        margin: const EdgeInsets.all(5),
         child: ListTile(
           title: Text(_todos[index]['title']),
           subtitle: Text(_todos[index]['description']),
